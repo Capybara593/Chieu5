@@ -62,35 +62,32 @@ router.get('/:id', async function(req, res, next) {
 // POST new product
 router.post('/', async function(req, res, next) {
   try {
-    let cate = await CategoryModel.findOne({ name: req.body.category, deletedAt: null });
+    let cate = await CategoryModel.findOne({name:req.body.category})
     if(cate){
       let newProduct = new productModel({
         name: req.body.name,
-        price: req.body.price,
+        price:req.body.price,
         quantity: req.body.quantity,
-        category: cate._id,
-        description: req.body.description || "",
-        imgURL: req.body.imgURL || ""
-      });
+        category:cate._id
+      })
       await newProduct.save();
       res.status(200).send({
-        success: true,
-        data: newProduct
+        success:true,
+        data:newProduct
       });
-    } else {
+    }else{
       res.status(404).send({
-        success: false,
-        data: "cate khong dung hoac da bi xoa mem"
+        success:false,
+        data:"cate khong dung"
       });
     }
   } catch (error) {
     res.status(404).send({
-      success: false,
-      message: error.message
+      success:false,
+      message:error.message
     });
   }
 });
-
 // PUT (Update) product
 router.put('/:id', async function(req, res, next) {
   try {
